@@ -1,10 +1,9 @@
 import pandas as pd
 import matplotlib.pyplot as plt
-import pandas as pd
 import streamlit as st
 
 def load_data(file_path):
-    return pd.read_csv(file_path)
+    return pd.read_parquet(file_path)
 
 def analyze_data(df):
     st.title("Análise de Formas de Pagamento e Parcelamento")
@@ -17,7 +16,7 @@ def analyze_data(df):
     st.subheader("Média de Parcelas para Compras com Cartão de Crédito:")
     st.write(round(avg_installments, 2))
 
-file_path = './data/olist_order_payments_dataset.csv'
+file_path = './data/olist_order_payments_dataset.parquet'
 data = load_data(file_path)
 
 analyze_data(data)
