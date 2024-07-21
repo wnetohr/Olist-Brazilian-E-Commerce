@@ -1,9 +1,8 @@
 import pandas as pd
 import matplotlib.pyplot as plt
-import pandas as pd
 import streamlit as st
 
-dados = pd.read_csv('./data/olist_products_dataset.csv')
+dados = pd.read_parquet('./data/olist_products_dataset.parquet')
 
 categoria = dados['product_category_name'].value_counts()
 

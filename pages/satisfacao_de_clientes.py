@@ -1,10 +1,9 @@
 import pandas as pd
 import matplotlib.pyplot as plt
-import pandas as pd
 import streamlit as st
 
-reviews = pd.read_csv('./data/olist_order_reviews_dataset.csv')
-orders = pd.read_csv('./data/olist_orders_dataset.csv')
+reviews = pd.read_parquet('./data/olist_order_reviews_dataset.parquet')
+orders = pd.read_parquet('./data/olist_orders_dataset.parquet')
 
 st.title("Análise de Satisfação")
 st.subheader("Média de Avalíações por período (Ano-Mês)")
