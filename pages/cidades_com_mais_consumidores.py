@@ -4,11 +4,11 @@ import pandas as pd
 import streamlit as st
 
 def load_data(file_path):
-    return pd.read_csv(file_path)
+    return pd.read_parquet(file_path)
 
 
 if __name__ == "__main__":
-    dt_customers = load_data('./data/olist_customers_dataset.csv')
+    dt_customers = load_data('./data/olist_customers_dataset.parquet')
     cities = dt_customers['customer_city'].value_counts()
     top_10 = cities.head(10)
     
