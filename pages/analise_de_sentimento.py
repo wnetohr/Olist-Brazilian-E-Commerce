@@ -2,8 +2,7 @@ import streamlit as st
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
-
-st.set_page_config(page_title="Análise de Sentimento e Satisfação do Consumidor", layout="wide")
+from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 
 def load_data(file_path):
     return pd.read_parquet(file_path)
@@ -20,55 +19,80 @@ orders['order_delivered_customer_date'] = pd.to_datetime(orders['order_delivered
 orders['order_estimated_delivery_date'] = pd.to_datetime(orders['order_estimated_delivery_date'])
 
 orders_reviews = orders.merge(reviews, on='order_id', how='inner')
+orders_reviews.rename(columns={'review_score': 'Nota'}, inplace=True)
 
-st.title('Visualização de Dados')
+# Notas
+st.title('Notas')
 
-# Criar figura com gráficos empilhados
-fig, ax = plt.subplots(2, 1, figsize=(10, 12))
+# gráfico de distribuição das notas por avaliação
+st.subheader('Distribuição das notas por avaliação')
+plt.figure(figsize=(12, 6))
+sns.countplot(data=orders_reviews, x='Nota')
+plt.title('Notas x Número de Avaliações')
+st.pyplot(plt)
 
-# Gráfico de distribuição das notas
-sns.countplot(data=orders_reviews, x='review_score', ax=ax[0])
-ax[0].set_title('Distribuição das Notas das Avaliações')
-
-# Calcular a diferença entre a data de entrega estimada e a data de entrega real
 orders_reviews['delivery_diff_days'] = (orders_reviews['order_delivered_customer_date'] - orders_reviews['order_estimated_delivery_date']).dt.days
-
-# Classificar a entrega como 'No Tempo' ou 'Atrasada'
 orders_reviews['delivery_status'] = orders_reviews['delivery_diff_days'].apply(lambda x: 'No Tempo' if x <= 0 else 'Atrasada')
-
-# Calcular a diferença entre as datas para os eixos
 orders_reviews['estimated_to_delivered_diff'] = (orders_reviews['order_delivered_customer_date'] - orders_reviews['order_estimated_delivery_date']).dt.days
 
-# Gráfico de dispersão entre a diferença de entrega estimada e real
-sns.scatterplot(data=orders_reviews, x='estimated_to_delivered_diff', y='review_score', hue='review_score', palette='viridis', ax=ax[1])
-ax[1].set_title('Dispersão entre Diferença de Datas de Entrega e Nota')
-ax[1].set_xlabel('Diferença em Dias (Entregas Estimada - Real)')
-ax[1].set_ylabel('Nota da Avaliação')
+# gráfico de dispersão entre a diferença de entrega estimada e real por nota
+st.subheader('Dispersão entre notas atribuídas e em quantos dias a entrega se adiantou ou atrasou, em relação a data prevista')
+plt.figure(figsize=(12, 6))
+sns.scatterplot(data=orders_reviews, x='estimated_to_delivered_diff', y='Nota', hue='Nota', palette='viridis')
+plt.title('Estimativa de entregas x Nota atribuída')
+plt.xlabel('Diferença em Dias (Entregas Estimada - Real)')
+plt.ylabel('Nota da Avaliação')
+st.pyplot(plt)
 
-# Ajustar o layout para adicionar espaçamento
-plt.tight_layout()
-plt.subplots_adjust(hspace=0.4)  # Ajuste o valor para aumentar ou diminuir o espaçamento
-
-st.pyplot(fig)
-
-# Análise de Comentários com Base na Pontualidade da Entrega
-st.title('Análise de Sentimento')
-
-# Contagem de comentários para cada status de entrega
-comment_count_by_status = orders_reviews.groupby('delivery_status')['review_comment_message'].count().reset_index()
-comment_count_by_status.columns = ['Status de Entrega', 'Quantidade de Comentários']
-
-st.write(comment_count_by_status)
-
-# Exemplo de comentários
-st.write("Exemplos de Comentários para Entregas no Tempo:")
-st.write(orders_reviews[orders_reviews['delivery_status'] == 'No Tempo']['review_comment_message'].dropna().sample(5).tolist())
-
-st.write("Exemplos de Comentários para Entregas Atrasadas:")
-st.write(orders_reviews[orders_reviews['delivery_status'] == 'Atrasada']['review_comment_message'].dropna().sample(5).tolist())
-
-# Tabela de resumo
-st.title('Número de Comentários x Avaliação')
-st.write(orders_reviews.groupby('review_score').agg({
+# Comentários
+st.title('Comentários')
+st.subheader('Número de comentários a partir da Nota atribuída')
+st.write(orders_reviews.groupby('Nota').agg({
     'review_comment_message': ['count']
 }).reset_index())
+
+st.subheader('Número de comentários para cada status de entrega')
+comment_count_by_status = orders_reviews.groupby('delivery_status')['review_comment_message'].count().reset_index()
+comment_count_by_status.columns = ['Status de Entrega', 'Quantidade de Comentários']
+st.write(comment_count_by_status)
+
+# exemplos de comentários
+st.title("Comentários exemplificados:")
+
+st.subheader('Exemplos de comentários para entregas feitas em tempo hábil')
+st.write(orders_reviews[orders_reviews['delivery_status'] == 'No Tempo']['review_comment_message'].dropna().sample(10).tolist())
+
+st.subheader("Exemplos de comentários para entregas feitas com atraso/não entregues:")
+st.write(orders_reviews[orders_reviews['delivery_status'] == 'Atrasada']['review_comment_message'].dropna().sample(10).tolist())
+
+#Análise de Sentimento
+st.title('Análise de Sentimento')
+analyzer = SentimentIntensityAnalyzer()
+
+def analyze_sentiment(comment):
+    if pd.isna(comment):
+        return None
+    score = analyzer.polarity_scores(comment)
+    if score['compound'] >= 0.1:
+        return 'Positivo'
+    elif score['compound'] <= -0.1:
+        return 'Negativo'
+    else:
+        return 'Neutro'
+
+orders_reviews['Sentimento'] = orders_reviews['review_comment_message'].apply(analyze_sentiment)
+
+# porcentagem de sentimentos
+sentiment_distribution = orders_reviews['Sentimento'].value_counts(normalize=True) * 100
+st.subheader('Distribuição dos sentimentos dos comentários pré-filtro de palavras')
+st.write(sentiment_distribution)
+
+# plot da distribuição dos escores 'compound'
+st.text('A nota é uma atribuída a uma medida compostade sentimento calculada pelo VADER (biblioteca), chamada compound.')
+st.text('Ele é uma média ponderada das valências dos termos encontrados em um texto, normalizada para um valor que varia de -1 (extremamente negativo) a +1 (extremamente positivo)')
+plt.figure(figsize=(12, 6))
+sns.histplot(orders_reviews['review_comment_message'].dropna().apply(lambda x: analyzer.polarity_scores(x)['compound']), bins=30, kde=True)
+plt.title('Distribuição das notas/compound dos comentários')
+plt.xlabel('Score Compound')
+plt.ylabel('Frequência')
+st.pyplot(plt)
