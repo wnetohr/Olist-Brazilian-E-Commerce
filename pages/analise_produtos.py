@@ -1,8 +1,8 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import streamlit as st
-import seaborn as sns
 import numpy as np
+import altair as alt
 
 produtos = pd.read_parquet('./data/olist_products_dataset.parquet')
 pedidos = pd.read_parquet('./data/olist_orders_dataset.parquet')
@@ -87,27 +87,9 @@ st.write(f'Média dos Preços: {media_precos:.2f}')
 st.write(f'Desvio Padrão dos Preços: {desviopadrao_precos:.2f}')
 st.write(f'Mediana dos Preços: {mediana_precos:.2f}')
 
-fig, ax = plt.subplots()
-sns.histplot(items_de_pedido.price, kde=False, stat="density", bins=10, ax=ax, color='blue')
+c = (alt.Chart(items_de_pedido).mark_boxplot().encode(x='price'))
 
-xmin, xmax = ax.get_xlim()
-x = np.linspace(xmin, xmax, 100)
-p = (1 / (desviopadrao_precos * np.sqrt(2 * np.pi))) * np.exp(-0.5 * ((x - media_precos) / desviopadrao_precos) ** 2)
-
-ax.plot(x, p, 'k', linewidth=2, label='Curva de Normalidade')
-
-ax.legend()
-
-st.pyplot(fig)
-
-fig, ax = plt.subplots()
-sns.boxplot(x=items_de_pedido.price, ax=ax)
-
-ax.axvline(media_precos, color='r', linestyle='--', label=f'Média: {media_precos:.2f}')
-ax.axvline(mediana_precos, color='g', linestyle='-', label=f'Mediana: {mediana_precos:.2f}')
-ax.legend()
-
-st.pyplot(fig)
+st.altair_chart(c, use_container_width=True)
 
 st.subheader('Estatísticas - Fretes')
 
@@ -119,27 +101,9 @@ st.write(f'Média dos Fretes: {media_fretes:.2f}')
 st.write(f'Desvio Padrão dos Fretes: {desviopadrao_fretes:.2f}')
 st.write(f'Mediana dos Fretes: {mediana_fretes:.2f}')
 
-fig, ax = plt.subplots()
-sns.histplot(items_de_pedido.freight_value, kde=False, stat="density", bins=10, ax=ax, color='blue')
+c = (alt.Chart(items_de_pedido).mark_boxplot().encode(x='freight_value'))
 
-xmin, xmax = ax.get_xlim()
-x = np.linspace(xmin, xmax, 100)
-p = (1 / (desviopadrao_fretes * np.sqrt(2 * np.pi))) * np.exp(-0.5 * ((x - media_fretes) / desviopadrao_fretes) ** 2)
-
-ax.plot(x, p, 'k', linewidth=2, label='Curva de Normalidade')
-
-ax.legend()
-
-st.pyplot(fig)
-
-fig, ax = plt.subplots()
-sns.boxplot(x=items_de_pedido.freight_value, ax=ax)
-
-ax.axvline(media_fretes, color='r', linestyle='--', label=f'Média: {media_fretes:.2f}')
-ax.axvline(mediana_fretes, color='g', linestyle='-', label=f'Mediana: {mediana_fretes:.2f}')
-ax.legend()
-
-st.pyplot(fig)
+st.altair_chart(c, use_container_width=True)
 
 plt.figure(figsize=(10, 6))
 items_de_pedido['order_id'].value_counts().plot(kind='hist', bins=20)
