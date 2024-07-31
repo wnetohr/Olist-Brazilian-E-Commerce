@@ -36,40 +36,38 @@ def get_top_keywords(texts, num_keywords=10):
     return word_freq[:num_keywords]
 
 def categorize_review(text):
-        quality_keywords = ['qualidade', 'produto', 'excelente', 'bom', 'ruim', 'defeito']
-        delivery_keywords = ['entrega', 'prazo', 'atraso', 'tempo', 'rápido', 'demorado']
-        price_keywords = ['preço', 'custo', 'caro', 'barato', 'valor']
-        service_keywords = ['atendimento', 'serviço', 'suporte', 'ajuda', 'resolvido']
+    quality_keywords = ['qualidade', 'produto', 'excelente', 'bom', 'ruim', 'defeito']
+    delivery_keywords = ['entrega', 'prazo', 'atraso', 'tempo', 'rápido', 'demorado']
+    price_keywords = ['preço', 'custo', 'caro', 'barato', 'valor']
+    service_keywords = ['atendimento', 'serviço', 'suporte', 'ajuda', 'resolvido']
 
-        if any(keyword in text for keyword in quality_keywords):
-            return 'Qualidade do Produto'
-        elif any(keyword in text for keyword in delivery_keywords):
-            return 'Entrega'
-        elif any(keyword in text for keyword in price_keywords):
-            return 'Preço'
-        elif any(keyword in text for keyword in service_keywords):
-            return 'Atendimento'
-        else:
-            return 'Outros'
+    if any(keyword in text for keyword in quality_keywords):
+        return 'Qualidade do Produto'
+    elif any(keyword in text for keyword in delivery_keywords):
+        return 'Entrega'
+    elif any(keyword in text for keyword in price_keywords):
+        return 'Preço'
+    elif any(keyword in text for keyword in service_keywords):
+        return 'Atendimento'
+    else:
+        return 'Outros'
 
-st.title('Análise de Palavras-chave das Reviews')
+st.title('Análise de Reviews')
 
 file_path = './data/olist_order_reviews_dataset.parquet'
 df = load_data(file_path)
 download_nltk_resources()
 
-if 'review_comment_message' in df.columns:
+if 'review_comment_message' in df.columns and 'review_score' in df.columns:
     df['review_comment_message'] = df['review_comment_message'].fillna('')
     df['processed_review'] = df['review_comment_message'].apply(preprocess_text)
-    
-    
     df['category'] = df['processed_review'].apply(categorize_review)
-    
+
     selected_category = st.selectbox(
         'Escolha uma categoria para visualizar',
         df['category'].unique()
     )
-    
+
     filtered_df = df[df['category'] == selected_category]
 
     st.write(f"Número de reviews na categoria '{selected_category}': {len(filtered_df)}")
@@ -80,5 +78,27 @@ if 'review_comment_message' in df.columns:
     for word, freq in top_keywords:
         st.write(f"- {word}: {freq}")
 
+    top_reviews_good = filtered_df[filtered_df['review_score'].isin([4, 5])]
+    top_reviews_good = top_reviews_good['review_comment_message'].apply(lambda x: x.strip()).replace('', pd.NA).dropna().head(5)
+
+    if not top_reviews_good.empty:
+        st.write("As 5 primeiras reviews bem avaliadas:")
+        review_list_good = top_reviews_good.tolist()
+        for i, review in enumerate(review_list_good, 1):
+            st.write(f"{i}. {review}")
+    else:
+        st.write("Não há reviews bem avaliadas disponíveis.")
+
+    top_reviews_bad = filtered_df[filtered_df['review_score'].isin([1, 2])]
+    top_reviews_bad = top_reviews_bad['review_comment_message'].apply(lambda x: x.strip()).replace('', pd.NA).dropna().head(5)
+
+    if not top_reviews_bad.empty:
+        st.write("As 5 primeiras reviews mal avaliadas:")
+        review_list_bad = top_reviews_bad.tolist()
+        for i, review in enumerate(review_list_bad, 1):
+            st.write(f"{i}. {review}")
+    else:
+        st.write("Não há reviews mal avaliadas disponíveis.")
+
 else:
-    st.error("O dataset deve conter a coluna 'review_comment_message'.")
+    st.error("O dataset deve conter as colunas 'review_comment_message' e 'review_score'.")
