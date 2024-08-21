@@ -124,7 +124,7 @@ anos = customers_orders_payments['order_purchase_timestamp'].dt.year
 st.write(anos.value_counts())
 
 # Datas comerciais
-commerce_dates = pd.read_csv("./data/feriados_comerciais.csv")
+commerce_dates = pd.read_parquet("./data/feriados_comerciais.parquet")
 st.subheader("Datas comerciais:")
 st.write(commerce_dates)
 
