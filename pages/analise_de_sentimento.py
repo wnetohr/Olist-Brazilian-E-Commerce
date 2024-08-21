@@ -26,7 +26,7 @@ st.title('Notas e Tempo de Envio')
 
 # gráfico de distribuição das notas por avaliação
 st.subheader('Distribuição das notas por avaliação')
-plt.figure(figsize=(20,6))
+plt.figure(figsize=(20,5))
 sns.countplot(data=orders_reviews, x='Nota')
 plt.title('Notas x Número de Avaliações')
 st.pyplot(plt)
@@ -37,14 +37,14 @@ orders_reviews['estimated_to_delivered_diff'] = (orders_reviews['order_delivered
 
 # gráfico de distribuição do tempo de envio sem outliers
 st.subheader('Distribuição do tempo de envio em dias (sem outliers)')
-plt.figure(figsize=(20, 6), dpi=500)
+plt.figure(figsize=(20, 5), dpi=500)
 test2 = orders_reviews['estimated_to_delivered_diff'][orders_reviews['estimated_to_delivered_diff'] > 60]
 test = orders_reviews['estimated_to_delivered_diff'][orders_reviews['estimated_to_delivered_diff'] < 60]
 sns.histplot(test, bins=15)
 plt.title('Distribuição do Tempo de Envio em Dias (Sem Outliers)', fontsize=16, loc='left')
 plt.xticks(fontsize=14)
-plt.ylabel('QTD de Envios', fontsize = 14)
-plt.xlabel('Dias', fontsize = 14)
+plt.ylabel('')
+plt.xlabel('days', color='lightgrey')
 st.pyplot(plt)
 
 st.text('Porém, têm algumas entregas que podem demorar de 60 a 100 dias, e isso demanda verificar os outliers')
@@ -56,7 +56,7 @@ sns.histplot(test2, bins=15, color='red')
 plt.title('Distribuição do Tempo de Envio dos Outliers', fontsize=16, loc='left')
 plt.xticks(fontsize=14)
 plt.ylabel('')
-plt.xlabel('Dias', fontsize = 14)
+plt.xlabel('days', color='lightgrey')
 st.pyplot(plt)
 
 # gráfico de violinplot para a diferença de entrega estimada e real por nota
@@ -122,7 +122,7 @@ plt.ylabel('Frequência', fontsize = 14)
 st.pyplot(plt)
 
 # Top 3 comentários mais positivos e negativos baseados nos scores 'compound'
-st.subheader('Top 3 comentários mais positivos e negativos baseados no Score Compound')
+st.subheader('Top 3 Comentários mais Positivos e Negativos baseados no Score Compound')
 
 # Ordenar os comentários pelos escores 'compound'
 orders_reviews['compound'] = orders_reviews['review_comment_message'].apply(lambda x: analyzer.polarity_scores(str(x))['compound'] if pd.notna(x) else None)
