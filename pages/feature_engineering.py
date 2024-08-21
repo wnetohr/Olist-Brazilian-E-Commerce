@@ -7,6 +7,7 @@ import seaborn as sns
 import datetime as dt
 import os
 import warnings
+import holidays
 warnings.filterwarnings('ignore')
 
 st.title("Engenharia de Features")
@@ -100,7 +101,7 @@ st.write(customers_orders_payments['payment_type'].value_counts())
 customers_orders_payments = customers_orders_payments[customers_orders_payments['payment_type'] != 'not_defined']
 
 # distribuição de parcelas
-st.subheader("Distribuição de parcelas")
+st.subheader("Pagamentos com múltiplos metodos")
 st.write(customers_orders_payments['payment_sequential'].value_counts())
 
 # Numero de pedidos por cliente
@@ -113,9 +114,46 @@ percentage_of_multiple_sales = customers_orders_payments[customers_orders_paymen
 st.write(f"Apenas {percentage_of_multiple_sales:.2f}% dos clientes compraram mais de uma vez!")
 
 c = (alt.Chart(customers_orders_payments).mark_bar(opacity=0.7).encode(
-    alt.X('payment_installments:Q', bin=True), 
+    alt.X('payment_installments', bin=True), 
     alt.Y('count()', title='Payment Installments Count')
     ).properties(
         title='Payment Installments Count'
     ))
 st.altair_chart(c, use_container_width=True)
+
+anos = customers_orders_payments['order_purchase_timestamp'].dt.year
+st.write(anos.value_counts())
+
+# Datas comerciais
+commerce_dates = pd.read_csv("./data/feriados_comerciais.csv")
+st.subheader("Datas comerciais:")
+st.write(commerce_dates)
+
+customers_orders_payments['order_purchase_timestamp'] = pd.to_datetime(customers_orders_payments['order_purchase_timestamp'])
+commerce_dates['Datas'] = pd.to_datetime(commerce_dates['Datas'])
+
+def ocorreu_antes_data_comercial(data_venda, datas_comerciais):
+    for data_comercial in datas_comerciais:
+        if data_comercial - pd.Timedelta(days=7) <= data_venda <= data_comercial:
+            return "Sim"
+    return "Não"
+
+customers_orders_payments['order_week_before_comdate'] = customers_orders_payments['order_purchase_timestamp'].apply(lambda x: ocorreu_antes_data_comercial(x, commerce_dates['Datas']))
+st.subheader("Quantas compras foram feitas em um período de uma semana antes de uma data comercial:")
+st.write(customers_orders_payments['order_week_before_comdate'].value_counts())
+st.write(customers_orders_payments.head())
+
+c = (alt.Chart(customers_orders_payments).mark_bar().encode(
+    alt.X('order_week_before_comdate'),
+    alt.Y('count()', title='Week Before Commercial Date Count')
+    ).properties(
+        title='Week Before Commercial Date Count'
+    ))
+st.altair_chart(c, use_container_width=True)
+
+customers_orders_payments_items = pd.merge(customers_orders_payments, order_items, on='order_id', how='inner')
+customer_products = customers_orders_payments_items.merge(
+    products, on='product_id', how='inner'
+)
+
+st.table(customer_products.head())
