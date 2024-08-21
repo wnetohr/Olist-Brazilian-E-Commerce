@@ -135,8 +135,8 @@ commerce_dates['Datas'] = pd.to_datetime(commerce_dates['Datas'])
 def ocorreu_antes_data_comercial(data_venda, datas_comerciais):
     for data_comercial in datas_comerciais:
         if data_comercial - pd.Timedelta(days=7) <= data_venda <= data_comercial:
-            return "Sim"
-    return "Não"
+            return "Yes"
+    return "No"
 
 customers_orders_payments['order_week_before_comdate'] = customers_orders_payments['order_purchase_timestamp'].apply(lambda x: ocorreu_antes_data_comercial(x, commerce_dates['Datas']))
 st.subheader("Quantas compras foram feitas em um período de uma semana antes de uma data comercial:")
@@ -156,4 +156,32 @@ customer_products = customers_orders_payments_items.merge(
     products, on='product_id', how='inner'
 )
 
-st.table(customer_products.head())
+# Distribuição de categorias
+st.subheader('Distribuição de categorias:')
+count_category = customer_products['product_category_name'].value_counts()
+c = (alt.Chart(customer_products).mark_bar().encode(
+    alt.Y('product_category_name', title='Categories').sort('-x'),
+    alt.X('count()', title='Category Sales')
+    ).properties(
+        title='Category Sales'
+    ))
+st.altair_chart(c, use_container_width=True)
+st.write(count_category)
+category_cut = int(customer_products['product_category_name'].nunique() * 0.2)
+st.write(int(category_cut))
+top_20percent_category = count_category.head(category_cut).index
+st.write(top_20percent_category)
+
+customer_products['filtered_category'] = customer_products['product_category_name'].apply(
+    lambda x: x if x in top_20percent_category else 'outros'
+)
+
+st.write(customer_products['filtered_category'].value_counts())
+
+c = (alt.Chart(customer_products).mark_bar().encode(
+    alt.Y('filtered_category', title='Filtered Category').sort('-x'),
+    alt.X('count()', title='Category Sales')
+    ).properties(
+        title='Category Sales'
+    ))
+st.altair_chart(c, use_container_width=True)
