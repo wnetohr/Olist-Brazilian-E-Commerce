@@ -7,7 +7,6 @@ import seaborn as sns
 import datetime as dt
 import os
 import warnings
-import holidays
 warnings.filterwarnings('ignore')
 
 st.title("Engenharia de Features")
