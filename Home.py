@@ -12,12 +12,20 @@ st.set_page_config(
 st.markdown(f'''
     <h1>Olist Brazilian E-Commerce</h1>
     <br>
-    Dado o E-commerce brasileiro, a pesquisa tem como objetivo desvendar os padrões de comportamento do 
-            consumidor e otimizar as operações logísticas por meio da análise abrangente do Dataset 
-            público do Olist. Com um dataset que possui mais de 100 mil pedidos realizados entre 2016 
-            e 2018 em diversos marketplaces do Brasil, o estudo se propõe a resolver uma série de desafios 
-            enfrentados pelo setor.
+    Dado o e-commerce brasileiro, a nossa pesquisa tem como objetivo entender os padrões de comportamento do 
+            consumidor por meio da análise abrangente do Dataset público do Olist. Com um dataset que possui
+             mais de 100 mil pedidos realizados entre 2016 e 2018 em diversos marketplaces do Brasil,
+             o nosso estudo se propõe a analisar uma série de desafios enfrentados pelo setor. Ao identificar padrões de consumo, a satisfação dos clientes, fatores
+            sazonais, e entre outros mecanismos de avaliação e consumo, o estudo busca fornecer uma compreensão 
+            mais profunda do impacto socioeconômico do e-commerce no Brasil. Para atingirmos estes objetivos,
+            levamos em consideração os seguintes questionamentos que foram levantados, mtendo em vista como o aprendizado de máquina e a análise de dados poderiam nos auxiliar,
+            que seriam:
     <br>
+    <h2>Perguntas</h2>
+            <ul>
+            <li>Como as variações sazonais afetam o desempenho das vendas em certos grupos de produtos no comércio eletrônico brasileiro?</li>
+            <li>Observando as avaliações feitas pelos consumidores em suas compras, quais são as críticas de maior impacto na satisfação dos consumidores?</li>
+    </ul>
     <h2>Alunos</h2>
     <ul>
             <li>Gabriel Reis</li>
