@@ -122,21 +122,21 @@ plt.ylabel('Frequência', fontsize = 14)
 st.pyplot(plt)
 
 # Top 3 comentários mais positivos e negativos baseados nos scores 'compound'
-st.subheader('Top 3 Comentários mais Positivos e Negativos baseados no Score Compound')
+#st.subheader('Top 3 Comentários mais Positivos e Negativos baseados no Score Compound')
 
 # Ordenar os comentários pelos escores 'compound'
-orders_reviews['compound'] = orders_reviews['review_comment_message'].apply(lambda x: analyzer.polarity_scores(str(x))['compound'] if pd.notna(x) else None)
+#orders_reviews['compound'] = orders_reviews['review_comment_message'].apply(lambda x: analyzer.polarity_scores(str(x))['compound'] if pd.notna(x) else None)
 
-st.subheader('Comentários Mais Positivos:')
-top_positive_comments = orders_reviews.sort_values(by='compound', ascending=False).head(3)
-for i, row in top_positive_comments.iterrows():
-    st.write(f"{i+1}. Nota: {row['Nota']}, Score Compound: {row['compound']:.2f}")
-    st.write(row['review_comment_message'])
-    st.write('---')
+#st.subheader('Comentários Mais Positivos:')
+#top_positive_comments = orders_reviews.sort_values(by='compound', ascending=False).head(3)
+#for i, row in top_positive_comments.iterrows():
+#    st.write(f"{i+1}. Nota: {row['Nota']}, Score Compound: {row['compound']:.2f}")
+#    st.write(row['review_comment_message'])
+#    st.write('---')
 
-st.subheader('Comentários Mais Negativos:')
-top_negative_comments = orders_reviews.sort_values(by='compound', ascending=True).head(3)
-for i, row in top_negative_comments.iterrows():
-    st.write(f"{i+1}. Nota: {row['Nota']}, Score Compound: {row['compound']:.2f}")
-    st.write(row['review_comment_message'])
-    st.write('---')
+#st.subheader('Comentários Mais Negativos:')
+#top_negative_comments = orders_reviews.sort_values(by='compound', ascending=True).head(3)
+#for i, row in top_negative_comments.iterrows():
+#    st.write(f"{i+1}. Nota: {row['Nota']}, Score Compound: {row['compound']:.2f}")
+#    st.write(row['review_comment_message'])
+#    st.write('---')
