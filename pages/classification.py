@@ -9,7 +9,7 @@ sns.set_theme(style="whitegrid")
 # Carregar os dados do arquivo CSV
 @st.cache_data
 def load_data():
-    return pd.read_csv('./data/outputs/classification_reports.csv')
+    return pd.read_csv('./data/outputs/classification_reports_clean.csv')
 
 df = load_data()
 
@@ -47,22 +47,30 @@ plt.tight_layout()
 # Exibir o gráfico no Streamlit
 st.pyplot(plt)
 
-# Exibir informações detalhadas de cada modelo
+# Exibir informações detalhadas de cada modelo em cards
 st.subheader('Detalhes dos Modelos Selecionados')
 
-# Criar uma coluna para exibir detalhes dos modelos
-col1, col2 = st.columns(2)
-
-with col1:
-    st.write("### Informações Detalhadas dos Modelos")
-    for model_name in selected_models:
-        st.write(f"**{model_name}:**")
-        model_info = filtered_df[filtered_df['Model'] == model_name]
-        st.write(model_info.set_index('Model').T)  # Transpose for better readability
-
-with col2:
-    st.write("### Tabelas de Métricas")
-    for model_name in selected_models:
-        st.write(f"**Métricas do {model_name}:**")
-        model_metrics = filtered_df[filtered_df['Model'] == model_name][metrics]
-        st.write(model_metrics.set_index(filtered_df.columns.difference(metrics).tolist()).T)  # Transpose for better readability
+for model_name in selected_models:
+    model_info = filtered_df[filtered_df['Model'] == model_name]
+    
+    # Exibir cada modelo em um "card"
+    with st.container():
+        st.write(f"### **{model_name}**")
+        
+        # Adicionar um contêiner para informações do modelo
+        with st.expander(f"Detalhes de {model_name}", expanded=True):
+            st.write(f"**Modelo:** {model_name}")
+            for col in filtered_df.columns:
+                if col != 'Model':
+                    st.write(f"**{col}:** {model_info[col].values[0]}")
+        
+       
+        # # Adicionar gráfico de barras horizontais para as métricas do modelo
+        # st.write(f"### Métricas de {model_name}")
+        # model_metrics = filtered_df[filtered_df['Model'] == model_name][metrics]
+        # fig, ax = plt.subplots(figsize=(10, 6))
+        # model_metrics.plot(kind='barh', ax=ax, colormap="viridis")
+        # ax.set_title(f'Métricas de {model_name}')
+        # ax.set_xlabel('Score')
+        # st.pyplot(fig)
+        
