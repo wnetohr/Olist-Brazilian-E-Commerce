@@ -15,7 +15,7 @@ col1, col2 = st.columns([1, 5])
 
 # Adiciona a imagem na primeira coluna
 with col1:
-    st.image("assets\olist_logo.png", width=100)  # Substitua "caminho_para_a_imagem.png" pelo caminho da sua imagem
+    st.image("./project_assets/olist_logo.png", width=100)  # Substitua "caminho_para_a_imagem.png" pelo caminho da sua imagem
 
 # Adiciona o título na segunda coluna
 with col2:
