@@ -1,0 +1,55 @@
+Actual,Model,Class,Count
+Class 0,Logistic Regression,Class 0,2031
+Class 1,Logistic Regression,Class 0,737
+Class 2,Logistic Regression,Class 0,450
+Class 0,Logistic Regression,Class 1,111
+Class 1,Logistic Regression,Class 1,86
+Class 2,Logistic Regression,Class 1,116
+Class 0,Logistic Regression,Class 2,733
+Class 1,Logistic Regression,Class 2,1502
+Class 2,Logistic Regression,Class 2,4167
+Class 0,Decision Tree,Class 0,2056
+Class 1,Decision Tree,Class 0,443
+Class 2,Decision Tree,Class 0,403
+Class 0,Decision Tree,Class 1,436
+Class 1,Decision Tree,Class 1,994
+Class 2,Decision Tree,Class 1,964
+Class 0,Decision Tree,Class 2,383
+Class 1,Decision Tree,Class 2,888
+Class 2,Decision Tree,Class 2,3366
+Class 0,Random Forest,Class 0,2438
+Class 1,Random Forest,Class 0,489
+Class 2,Random Forest,Class 0,256
+Class 0,Random Forest,Class 1,127
+Class 1,Random Forest,Class 1,727
+Class 2,Random Forest,Class 1,198
+Class 0,Random Forest,Class 2,310
+Class 1,Random Forest,Class 2,1109
+Class 2,Random Forest,Class 2,4279
+Class 0,K-Nearest Neighbors,Class 0,1422
+Class 1,K-Nearest Neighbors,Class 0,592
+Class 2,K-Nearest Neighbors,Class 0,1044
+Class 0,K-Nearest Neighbors,Class 1,433
+Class 1,K-Nearest Neighbors,Class 1,650
+Class 2,K-Nearest Neighbors,Class 1,849
+Class 0,K-Nearest Neighbors,Class 2,1020
+Class 1,K-Nearest Neighbors,Class 2,1083
+Class 2,K-Nearest Neighbors,Class 2,2840
+Class 0,Gradient Boosting,Class 0,2201
+Class 1,Gradient Boosting,Class 0,680
+Class 2,Gradient Boosting,Class 0,341
+Class 0,Gradient Boosting,Class 1,128
+Class 1,Gradient Boosting,Class 1,218
+Class 2,Gradient Boosting,Class 1,136
+Class 0,Gradient Boosting,Class 2,546
+Class 1,Gradient Boosting,Class 2,1427
+Class 2,Gradient Boosting,Class 2,4256
+Class 0,XGBoost,Class 0,2287
+Class 1,XGBoost,Class 0,586
+Class 2,XGBoost,Class 0,294
+Class 0,XGBoost,Class 1,169
+Class 1,XGBoost,Class 1,454
+Class 2,XGBoost,Class 1,198
+Class 0,XGBoost,Class 2,419
+Class 1,XGBoost,Class 2,1285
+Class 2,XGBoost,Class 2,4241
