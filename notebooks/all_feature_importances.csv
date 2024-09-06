@@ -1,0 +1,69 @@
+Feature,Importance,Model
+comp_score,0.19373879385363485,Decision Tree
+payment_value,0.11689510854036003,Decision Tree
+product_description_length,0.09833828722810514,Decision Tree
+product_weight_g,0.08428947082760092,Decision Tree
+pos,0.07382321749704059,Decision Tree
+product_name_length,0.07296178511883182,Decision Tree
+delivery_duration,0.07277838071559456,Decision Tree
+delivery_time_diff,0.05982372463505315,Decision Tree
+actual_est_delivery_diff,0.047722079179144526,Decision Tree
+neu,0.041736291034339616,Decision Tree
+payment_installments,0.037580451548583416,Decision Tree
+neg,0.03524758970204278,Decision Tree
+product_photos_qty,0.03005106169860194,Decision Tree
+if_delivered,0.012912877794375973,Decision Tree
+freight_value_factor,0.01152569202404128,Decision Tree
+price_factor,0.008917370238372758,Decision Tree
+polarity,0.0016578183642767762,Decision Tree
+comp_score,0.11949706056939996,Random Forest
+payment_value,0.09902177845362276,Random Forest
+product_description_length,0.08698720301785634,Random Forest
+product_weight_g,0.0796458752041036,Random Forest
+pos,0.07522977516741314,Random Forest
+delivery_duration,0.07180752690628402,Random Forest
+neg,0.06848162013483855,Random Forest
+product_name_length,0.06814023235143327,Random Forest
+actual_est_delivery_diff,0.06738380721622167,Random Forest
+delivery_time_diff,0.06556123199945547,Random Forest
+neu,0.06171643642412646,Random Forest
+payment_installments,0.03742651992419893,Random Forest
+product_photos_qty,0.034219817774771906,Random Forest
+polarity,0.030451084433712198,Random Forest
+freight_value_factor,0.012639295475557012,Random Forest
+price_factor,0.011998654138839614,Random Forest
+if_delivered,0.00979208080816503,Random Forest
+neg,0.31976795420258,Gradient Boosting
+comp_score,0.2863234140561358,Gradient Boosting
+pos,0.13990966469915317,Gradient Boosting
+neu,0.04643396247378475,Gradient Boosting
+if_delivered,0.04164176303576024,Gradient Boosting
+payment_value,0.03432020027658075,Gradient Boosting
+actual_est_delivery_diff,0.03180882999002909,Gradient Boosting
+delivery_duration,0.03123446242421187,Gradient Boosting
+delivery_time_diff,0.030915979423087738,Gradient Boosting
+price_factor,0.01783156905884215,Gradient Boosting
+product_description_length,0.007462460444757413,Gradient Boosting
+product_weight_g,0.00726059810346243,Gradient Boosting
+payment_installments,0.0016841034631953056,Gradient Boosting
+product_name_length,0.0014418040973798606,Gradient Boosting
+product_photos_qty,0.0013216206054199407,Gradient Boosting
+freight_value_factor,0.00035673797472342695,Gradient Boosting
+polarity,0.00028487567089600983,Gradient Boosting
+comp_score,0.18514227867126465,XGBoost
+if_delivered,0.16099978983402252,XGBoost
+pos,0.15846164524555206,XGBoost
+neg,0.114314965903759,XGBoost
+price_factor,0.08111083507537842,XGBoost
+actual_est_delivery_diff,0.03990812599658966,XGBoost
+payment_value,0.03550872579216957,XGBoost
+delivery_duration,0.034621965140104294,XGBoost
+neu,0.03212237358093262,XGBoost
+product_weight_g,0.026727715507149696,XGBoost
+freight_value_factor,0.025972498580813408,XGBoost
+product_description_length,0.02549651823937893,XGBoost
+product_photos_qty,0.02434615232050419,XGBoost
+product_name_length,0.024068238213658333,XGBoost
+payment_installments,0.022860443219542503,XGBoost
+polarity,0.00833773985505104,XGBoost
+delivery_time_diff,0.0,XGBoost
