@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
+from PIL import Image
 
 sns.set_theme(style="whitegrid")
 
@@ -79,6 +80,9 @@ filtered_confusion_matrices_df = confusion_matrices_df[confusion_matrices_df['Mo
 if not filtered_confusion_matrices_df.empty:
     num_models = len(selected_models)
     num_rows = (num_models + 1) // 2  # Calcula o número de linhas necessárias
+
+    # Mapeamento das classes
+    class_mapping = {0: 'Negativo', 1: 'Neutro', 2: 'Positivo'}
     
     # Dividir a exibição em linhas e colunas
     for row in range(num_rows):
@@ -92,13 +96,15 @@ if not filtered_confusion_matrices_df.empty:
                 if not matrix.empty:
                     # Configurar a matriz de confusão
                     matrix_data = matrix.pivot(index='Actual', columns='Class', values='Count').fillna(0)
-                    class_labels = matrix_data.columns  # Labels das classes
+                    
+                    # Mapeamento para o eixo Y (classes reais)
+                    y_labels = [class_mapping.get(int(idx.split(' ')[-1]), idx) for idx in matrix_data.index]
                     
                     with cols[col]:
                         plt.figure(figsize=(8, 6))
                         sns.heatmap(matrix_data, annot=True, fmt='d', cmap='Blues',
-                                    xticklabels=class_labels,
-                                    yticklabels=class_labels)
+                                    xticklabels=matrix_data.columns,  # Manter rótulos originais no eixo X
+                                    yticklabels=y_labels)  # Aplicar mapeamento ao eixo Y
                         plt.title(f'Matriz de Confusão para {model}')
                         plt.xlabel('Classe Prevista')
                         plt.ylabel('Classe Real')
@@ -106,3 +112,28 @@ if not filtered_confusion_matrices_df.empty:
                         st.pyplot(plt)
 else:
     st.warning('Nenhuma matriz de confusão encontrada para os modelos selecionados.')
+
+st.subheader('SHAP para o Random Forest')
+# Cria duas colunas
+col1, col2 = st.columns([2, 1])  # Ajuste os números para definir a largura das colunas
+
+# Exibe a imagem na primeira coluna
+with col1:
+    image = Image.open('data/outputs/SHAP_RF_small.png')
+    st.image(image, caption='Gráfico SHAP - Importância das Features')
+
+# Adiciona o texto na segunda coluna
+with col2:
+    st.write("""
+    ### Interpretação do Gráfico SHAP para o Random Forest
+    Este gráfico mostra a importância das features para o modelo Random Forest. Cada barra representa a contribuição média absoluta de uma feature em relação à decisão final do modelo.
+
+    - **payment_value**: Indica o valor pago pelo cliente.
+    - **payment_installments**: Refere-se ao número de parcelas utilizadas para o pagamento.
+    - **product_name_length**: Refere-se ao comprimento do nome do produto.
+
+    Essas features são as mais influentes para o modelo na predição das avaliações/satisfação dadas pelos clientes, de acordo com o SHAP. Ou seja, podemos inferir que:
+    """)
+
+    st.write(""" O comprimento do nome do produto pode estar influenciando como o modelo faz as previsões, potencialmente indicando que produtos com nomes mais longos ou curtos estão associados a certos comportamentos ou padrões de compra. """)
+    st.write(""" A quantidade de parcelas e o valor do pagamento são relevantes, sugerindo que o modelo está capturando como diferentes padrões de pagamento influenciam as avaliações ou decisões dos clientes. """)
