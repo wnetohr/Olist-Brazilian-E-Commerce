@@ -1,19 +1,19 @@
 ,Class 0,Class 1,Class 2,Model
-Class 0,1148,663,497,Logistic Regression
-Class 1,651,651,1590,Logistic Regression
-Class 2,204,534,3995,Logistic Regression
-Class 0,1552,504,252,Decision Tree
-Class 1,508,1383,1001,Decision Tree
-Class 2,278,1029,3426,Decision Tree
-Class 0,1796,316,196,Random Forest
-Class 1,461,1260,1171,Random Forest
-Class 2,147,364,4222,Random Forest
+Class 0,1280,530,498,Logistic Regression
+Class 1,757,563,1572,Logistic Regression
+Class 2,251,511,3971,Logistic Regression
+Class 0,1564,511,233,Decision Tree
+Class 1,515,1392,985,Decision Tree
+Class 2,313,989,3431,Decision Tree
+Class 0,1792,311,205,Random Forest
+Class 1,466,1266,1160,Random Forest
+Class 2,132,383,4218,Random Forest
 Class 0,984,531,793,K-Nearest Neighbors
 Class 1,563,1019,1310,K-Nearest Neighbors
 Class 2,767,1127,2839,K-Nearest Neighbors
-Class 0,1457,444,407,Gradient Boosting
-Class 1,630,724,1538,Gradient Boosting
-Class 2,165,382,4186,Gradient Boosting
-Class 0,1604,413,291,XGBoost
-Class 1,543,973,1376,XGBoost
-Class 2,175,377,4181,XGBoost
+Class 0,1412,451,445,Gradient Boosting
+Class 1,615,735,1542,Gradient Boosting
+Class 2,158,385,4190,Gradient Boosting
+Class 0,1545,420,343,XGBoost
+Class 1,556,910,1426,XGBoost
+Class 2,150,376,4207,XGBoost
