@@ -3,10 +3,10 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-st.title("Visualização dos dados clusterizados")
+st.title("Clusterização")
+st.subheader("Visualização dos dados clusterizados: Escolha do número de clusters e tratamento dos dados")
 
 # Vizualição da escolha da formatação dos dados e do número de clusters
-st.subheader("Escolha do número de clusters e tratamento dos dados")
 formato_dados = ["original", "normalizado", "padronizado"]
 formato_escolhido = st.selectbox("Selecione o tratamento dos dados", formato_dados)
 formato_arquivo = {

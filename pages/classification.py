@@ -18,7 +18,14 @@ def load_data(file_path):
 # Carregar o arquivo de resultados
 df = load_data('./data/outputs/results.parquet')
 
-st.title('Comparação de Modelos de Classificação')
+st.title('🔎 Classificação')
+st.subheader('Comparação de Modelos de Classificação')
+st.markdown("""
+Esta página foi criada para fornecer uma visão detalhada do desempenho de vários modelos de classificação treinados em diferentes conjuntos de dados. 
+            Aqui, você pode comparar as principais métricas de cada modelo, explorar as características que mais influenciam as previsões, e analisar as matrizes
+             de confusão para entender melhor os erros de classificação. Vale ressaltar que agrupamos as notas entre alguns ''review_score_factor'', e o que se comportou de forma mais realista foi separará-las em 3 grupos.
+            Eles são o grupo 0 (notas 1), grupo 1 (notas 2, 3 e 4) e o grupo 2 (notas 5).
+""")
 
 # Selecionar modelos e conjunto de dados
 models = df['Model'].unique()
@@ -60,6 +67,9 @@ selected_models = st.multiselect('Selecione os Modelos para Comparar', options=m
 
 # Filtro para Importâncias das Características
 st.subheader('Importâncias das Características')
+st.markdown("""
+Aqui você pode visualizar quais características foram mais importantes para os modelos selecionados ao tomar decisões de classificação. Compreender essas importâncias pode ajudar a identificar quais fatores influenciam mais as previsões.
+""")
 
 filtered_importances_df = feature_importances_df[feature_importances_df['Model'].isin(selected_models)]
 
@@ -74,6 +84,10 @@ else:
 
 # Filtro para Matrizes de Confusão
 st.subheader('Matrizes de Confusão')
+st.markdown("""Aqui exibimos as 4 matrizes de confusão que pareceram exibir os erros de classificação da melhor forma. 
+            Analisando as matrizes, podemos identificar alguns padrões de erro e áreas onde os modelos podem ser aprimorados. 
+            Majoritariamente essas áreas seriam as ''Neutras'', visto que os extremos ''Negativos'' e ''Positivos'', os modelos conseguem determinar bem.
+            """)
 
 filtered_confusion_matrices_df = confusion_matrices_df[confusion_matrices_df['Model'].isin(selected_models)]
 
@@ -126,7 +140,7 @@ with col1:
 with col2:
     st.write("""
     ### Interpretação do Gráfico SHAP para o Random Forest
-    Este gráfico mostra a importância das features para o modelo Random Forest. Cada barra representa a contribuição média absoluta de uma feature em relação à decisão final do modelo.
+    Este gráfico mostra a importância das features mais relevantes para o modelo Random Forest. Cada barra representa a contribuição média absoluta de uma feature em relação à decisão final do modelo.
 
     - **payment_value**: Indica o valor pago pelo cliente.
     - **payment_installments**: Refere-se ao número de parcelas utilizadas para o pagamento.
@@ -137,3 +151,8 @@ with col2:
 
     st.write(""" O comprimento do nome do produto pode estar influenciando como o modelo faz as previsões, potencialmente indicando que produtos com nomes mais longos ou curtos estão associados a certos comportamentos ou padrões de compra. """)
     st.write(""" A quantidade de parcelas e o valor do pagamento são relevantes, sugerindo que o modelo está capturando como diferentes padrões de pagamento influenciam as avaliações ou decisões dos clientes. """)
+
+st.subheader('Conclusão e Próximos Passos')
+st.markdown("""
+Com as informações e visualizações fornecidas, agora temos uma base sólida para comparar o desempenho dos modelos e identificar oportunidades de melhoria, tendo em vista possíveis ajustes nos dados de entrada ou parâmetros do modelo, para impactar nos resultados.
+""")
