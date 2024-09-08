@@ -59,7 +59,7 @@ filtered_df = dados_agrupados[dados_agrupados['filtered_category'].isin(selected
 
 if not filtered_df.empty:
     plt.figure(figsize=(12, 8))
-    sns.barplot(data=filtered_df, x='cluster', y='count', hue='filtered_category')
+    sns.barplot(data=filtered_df, x='cluster', y='qtd_percategory', hue='filtered_category')
     plt.title('Contagem de categorias por Cluster', fontsize=16)
     plt.xlabel('Cluster', fontsize=14)
     plt.ylabel('Compras', fontsize=14)
