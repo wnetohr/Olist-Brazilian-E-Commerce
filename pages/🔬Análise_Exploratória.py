@@ -48,7 +48,7 @@ Após a compra do produto na Olist Store, um vendedor é notificado para atender
 
 st.subheader("Esquema do Dataset:")
 st.write("""Os dados estão divididos em vários conjuntos de dados para melhor compreensão e organização. Aqui está sua arquitetura:""")
-st.image(".\project_assets\olist_dataset_schema.png")
+st.image("./project_assets/olist_dataset_schema.png")
 
 def resumirtabela(df):
     resumo = pd.DataFrame(df.dtypes, columns=['dtypes'])
