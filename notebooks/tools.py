@@ -56,3 +56,7 @@ translations = {
     'product_height_cm': 'Altura do Produto (cm)',
     'product_width_cm': 'Largura do Produto (cm)'
 }
+
+# ----------- EXEMPLO DE USO -----------
+# corr.rename(columns=tools.translations, inplace=True)
+# corr.index = corr.index.map(tools.translations)
