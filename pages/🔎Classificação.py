@@ -111,18 +111,20 @@ if not filtered_confusion_matrices_df.empty:
                     # Configurar a matriz de confusão
                     matrix_data = matrix.pivot(index='Actual', columns='Class', values='Count').fillna(0)
                     
-                    # Mapeamento para o eixo Y (classes reais)
+                    # Extraindo e mapeando os rótulos das classes
+                    class_labels = [class_mapping.get(int(col.split(' ')[-1]), col) for col in matrix_data.columns]
                     y_labels = [class_mapping.get(int(idx.split(' ')[-1]), idx) for idx in matrix_data.index]
                     
                     with cols[col]:
                         plt.figure(figsize=(8, 6))
                         sns.heatmap(matrix_data, annot=True, fmt='d', cmap='Blues',
-                                    xticklabels=matrix_data.columns,  # Manter rótulos originais no eixo X
-                                    yticklabels=y_labels)  # Aplicar mapeamento ao eixo Y
+                                    xticklabels=class_labels,
+                                    yticklabels=y_labels)
                         plt.title(f'Matriz de Confusão para {model}')
                         plt.xlabel('Classe Prevista')
                         plt.ylabel('Classe Real')
                         plt.tight_layout()
+                        st.pyplot(plt)
                         st.pyplot(plt)
 else:
     st.warning('Nenhuma matriz de confusão encontrada para os modelos selecionados.')
