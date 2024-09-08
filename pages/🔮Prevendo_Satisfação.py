@@ -1,5 +1,7 @@
 import streamlit as st
+import gzip
 import pickle
+import io
 import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.pipeline import Pipeline, FeatureUnion
@@ -12,6 +14,7 @@ from LeIA import SentimentIntensityAnalyzer
 def identity(X):
     return X
 
+# Definição da classe SentimentAnalyzer
 class SentimentAnalyzer(BaseEstimator, TransformerMixin):
     def __init__(self):
         self.analyzer = SentimentIntensityAnalyzer()
@@ -55,21 +58,26 @@ def create_pipeline():
     
     return pipeline
 
-# Caminho para o arquivo do modelo
-model_path = './notebooks/model_rf.pkl'
+# Função para descompactar o modelo
+def decompress_model(compressed_path):
+    with gzip.open(compressed_path, 'rb') as f:
+        model_bytes = f.read()
+    return pickle.load(io.BytesIO(model_bytes))
 
-# Carregar o modelo treinado usando pickle
+# Caminho para o arquivo compactado do modelo
+model_path = './notebooks/model_rf.pkl.gz'
+
+# Carregar o modelo descompactado
 try:
-    with open(model_path, 'rb') as f:
-        model_rf = pickle.load(f)
+    model_rf = decompress_model(model_path)
 except FileNotFoundError:
     st.error("Arquivo do modelo não encontrado. Verifique o caminho.")
 except Exception as e:
     st.error(f"Erro ao carregar o modelo: {e}")
 
-st.title("Prevendo a satisfação do cliente pelo comentário")
+st.title("Prevendo a satisfação do cliente baseado nos comentários")
 
-review_text = st.text_input("Digite o comentário de uma avaliação")
+review_text = st.text_input("Escreva o comentário da avaliação")
 
 if st.button("Fazer Previsão"):
     try:
