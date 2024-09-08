@@ -1,31 +1,31 @@
 Actual,Model,Class,Count
-Class 0,Logistic Regression,Class 0,1148
-Class 1,Logistic Regression,Class 0,651
-Class 2,Logistic Regression,Class 0,204
-Class 0,Logistic Regression,Class 1,663
-Class 1,Logistic Regression,Class 1,651
-Class 2,Logistic Regression,Class 1,534
-Class 0,Logistic Regression,Class 2,497
-Class 1,Logistic Regression,Class 2,1590
-Class 2,Logistic Regression,Class 2,3995
-Class 0,Decision Tree,Class 0,1564
-Class 1,Decision Tree,Class 0,483
-Class 2,Decision Tree,Class 0,275
-Class 0,Decision Tree,Class 1,505
-Class 1,Decision Tree,Class 1,1394
-Class 2,Decision Tree,Class 1,1043
-Class 0,Decision Tree,Class 2,239
-Class 1,Decision Tree,Class 2,1015
-Class 2,Decision Tree,Class 2,3415
-Class 0,Random Forest,Class 0,1794
-Class 1,Random Forest,Class 0,452
-Class 2,Random Forest,Class 0,139
-Class 0,Random Forest,Class 1,307
-Class 1,Random Forest,Class 1,1276
-Class 2,Random Forest,Class 1,382
-Class 0,Random Forest,Class 2,207
-Class 1,Random Forest,Class 2,1164
-Class 2,Random Forest,Class 2,4212
+Class 0,Logistic Regression,Class 0,1280
+Class 1,Logistic Regression,Class 0,757
+Class 2,Logistic Regression,Class 0,251
+Class 0,Logistic Regression,Class 1,530
+Class 1,Logistic Regression,Class 1,563
+Class 2,Logistic Regression,Class 1,511
+Class 0,Logistic Regression,Class 2,498
+Class 1,Logistic Regression,Class 2,1572
+Class 2,Logistic Regression,Class 2,3971
+Class 0,Decision Tree,Class 0,1559
+Class 1,Decision Tree,Class 0,482
+Class 2,Decision Tree,Class 0,284
+Class 0,Decision Tree,Class 1,504
+Class 1,Decision Tree,Class 1,1407
+Class 2,Decision Tree,Class 1,1039
+Class 0,Decision Tree,Class 2,245
+Class 1,Decision Tree,Class 2,1003
+Class 2,Decision Tree,Class 2,3410
+Class 0,Random Forest,Class 0,1792
+Class 1,Random Forest,Class 0,459
+Class 2,Random Forest,Class 0,136
+Class 0,Random Forest,Class 1,306
+Class 1,Random Forest,Class 1,1275
+Class 2,Random Forest,Class 1,359
+Class 0,Random Forest,Class 2,210
+Class 1,Random Forest,Class 2,1158
+Class 2,Random Forest,Class 2,4238
 Class 0,K-Nearest Neighbors,Class 0,984
 Class 1,K-Nearest Neighbors,Class 0,563
 Class 2,K-Nearest Neighbors,Class 0,767
@@ -35,21 +35,21 @@ Class 2,K-Nearest Neighbors,Class 1,1127
 Class 0,K-Nearest Neighbors,Class 2,793
 Class 1,K-Nearest Neighbors,Class 2,1310
 Class 2,K-Nearest Neighbors,Class 2,2839
-Class 0,Gradient Boosting,Class 0,1457
-Class 1,Gradient Boosting,Class 0,630
-Class 2,Gradient Boosting,Class 0,165
-Class 0,Gradient Boosting,Class 1,444
-Class 1,Gradient Boosting,Class 1,724
-Class 2,Gradient Boosting,Class 1,382
-Class 0,Gradient Boosting,Class 2,407
-Class 1,Gradient Boosting,Class 2,1538
-Class 2,Gradient Boosting,Class 2,4186
-Class 0,XGBoost,Class 0,1604
-Class 1,XGBoost,Class 0,543
-Class 2,XGBoost,Class 0,175
-Class 0,XGBoost,Class 1,413
-Class 1,XGBoost,Class 1,973
-Class 2,XGBoost,Class 1,377
-Class 0,XGBoost,Class 2,291
-Class 1,XGBoost,Class 2,1376
-Class 2,XGBoost,Class 2,4181
+Class 0,Gradient Boosting,Class 0,1412
+Class 1,Gradient Boosting,Class 0,616
+Class 2,Gradient Boosting,Class 0,158
+Class 0,Gradient Boosting,Class 1,451
+Class 1,Gradient Boosting,Class 1,733
+Class 2,Gradient Boosting,Class 1,385
+Class 0,Gradient Boosting,Class 2,445
+Class 1,Gradient Boosting,Class 2,1543
+Class 2,Gradient Boosting,Class 2,4190
+Class 0,XGBoost,Class 0,1545
+Class 1,XGBoost,Class 0,556
+Class 2,XGBoost,Class 0,150
+Class 0,XGBoost,Class 1,420
+Class 1,XGBoost,Class 1,910
+Class 2,XGBoost,Class 1,376
+Class 0,XGBoost,Class 2,343
+Class 1,XGBoost,Class 2,1426
+Class 2,XGBoost,Class 2,4207
