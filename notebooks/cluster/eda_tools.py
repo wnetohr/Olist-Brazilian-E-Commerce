@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
-def barplot_clusters_stacked(dfall : dict[str, pd.DataFrame], title="plot de clusters stackadados", l2_loc: list=[1.01, 0.1], H: str="\\", **kwargs):
+def barplot_clusters_stacked(dfall : dict[str, pd.DataFrame], title="plot de clusters stackadados", l2_loc: list=[1.01, 0.1], H: str="/", **kwargs):
     n_df = len(list(dfall.keys()))
     n_col = len(dfall[list(dfall.keys())[0]].columns) 
     n_ind = len(dfall[list(dfall.keys())[0]].index)

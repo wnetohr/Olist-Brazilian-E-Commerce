@@ -1,6 +1,6 @@
 # Documentação do processo de clusterização
 
-## Pipeline
+## Pipeline para obtenção de clusters e EDA
 
 ### Fluxo principal
 1. feature_engineering.ipynb
@@ -10,6 +10,20 @@
 ### Funções suporte
 1. cluster_tools.py
 2. eda_tools.py
+
+## Relação de feriados
+* Feriados comerciais: 
+    * Black Friday;
+    * Reveillon.
+* Feriados religiosos:
+    * Natal;
+    * Páscoa.
+* Feriados familiares:
+    * Dia das crianças;
+    * Dia da mulher;
+    * Dia das mães
+    * Dia dos pais;
+    * Dia dos namorados.
 
 ## Dicionário dos dados
 
@@ -85,3 +99,73 @@
     * Tipo: float64 - decimal padrão americano
     * Exemplo: 169.492277
 -->
+
+## Objetivo
+Como as variações sazonais afetam o desempenho das vendas em certos grupos de produtos no comércio eletrônico brasileiro?
+* A pergunta busca entender como a demanda sazonal afeta as vendas de grupos de produtos no e-commerce brasileiro. Compreender as flutuações do mercado em diferentes períodos permite prever aumentos e quedas no fluxo de compras, além de mostrar a sensibilidade de certos produtos a essas variações sazonais.
+
+
+### Objetivo específico
+Analisar os padrões sazonais de compra dos consumidores brasileiros, identificando picos de demanda em diferentes datas comerciais do ano e agrupamentos de produtos mais afetados;
+
+## Perguntas
+
+### Qual a relação numérica das vendas por categorias entre os clusters?
+* Obter insights
+* Incluir um gráfico para demonstração do percentual das vendas por catégoria nesse cluster
+    * Não utilizar gráfico de barra
+
+```Conclusão:```
+
+### Qual a relação numérica das vendas por feriados entre os clusters?
+* Obter insights
+* Incluir um gráfico para demonstração do percentual das vendas por feriado nesse cluster
+    * Não utilizar gráfico de barra
+
+```Conclusão:```
+
+### Dentre os feriados listados, qual a relação das vendas por categorias para cada feriado nos clusters
+* Obter insights
+
+```Conclusão:```
+
+### Dentre os meses do ano, qual a relação das vendas por categorias para cada mês nos clusters
+* Obter insights
+
+```Conclusão:```
+
+### Qual a relação do valor das vendas nos cluster?
+* Preço médio* por venda nos clusters
+* Preço por venda por categoria nos clusters
+    * Relação de quais categorias possuem valor por venda acima da média* no cluster
+* Preço por venda por feriado nos clusters
+    * Relação de quais feriados possuem valor por venda acima da média* no cluster
+* *Abordagem por média? mediana? desvio padrão?
+
+```Conclusão:```
+
+### Qual a relação do valor do frente das vendas nos cluster?
+* Preço médio* por frete da venda nos clusters
+* Preço por frete da venda por categoria nos clusters
+    * Relação de quais categorias possuem valor por frete da venda acima da média* no cluster
+* Preço por frete da venda por feriado nos clusters
+    * Relação de quais feriados possuem valor por frete da venda acima da média* no cluster
+* *Abordagem por média? mediana? desvio padrão?
+
+```Conclusão:```
+
+## Clusters
+Descrição das caracteristicas de cada cluster. As informações obtidas pelo EDA estão postas nessa secção.
+
+### Cluster 0: 
+    
+* 
+
+### Cluster 1:
+
+* 
+
+    
+### Cluster 2:
+    
+* 
