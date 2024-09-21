@@ -112,15 +112,11 @@ Analisar os padrões sazonais de compra dos consumidores brasileiros, identifica
 
 ### Qual a relação numérica das vendas por categorias entre os clusters?
 * Obter insights
-* Incluir um gráfico para demonstração do percentual das vendas por catégoria nesse cluster
-    * Não utilizar gráfico de barra
 
 ```Conclusão:```
 
 ### Qual a relação numérica das vendas por feriados entre os clusters?
 * Obter insights
-* Incluir um gráfico para demonstração do percentual das vendas por feriado nesse cluster
-    * Não utilizar gráfico de barra
 
 ```Conclusão:```
 
