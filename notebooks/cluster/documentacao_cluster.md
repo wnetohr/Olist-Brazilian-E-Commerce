@@ -155,13 +155,13 @@ Descrição das caracteristicas de cada cluster. As informações obtidas pelo E
 
 ### Cluster 0: 
     
-* 
+* Feriados: As vendas desse cluster são pouco vinculadas a feriados, possuindo um quantitativo de 27.808 vendas que não são vinculadas a nenhum feriado, 1.735 vendas vinculadas ao reveillon e 1.565 vendas vinculadas a páscoa. É possivel afirmar que esse cluster reflete primariamente um padrão de consumo não vinculado a feriados.
 
 ### Cluster 1:
 
-* 
-
-    
+* Feriados: As vendas desse cluster estão distruibuidas em 3 feriados e também há algumas vendas não vinculadas a nenhum feriados. Os feriados são black friday, com 7.055 vendas, dia das criançãs, com 4.320 vendas e natal, com 2.699. Além dos feriados há um quantitativo de 4.740 vendas não vinculadas a nenhum feriado. Ao considerar que esse cluster possui um quantitativo de vendas não vinculados a feriados e outros 3 quantitavos de feriados onde um é um feriado comercial, um religioso e um familiar, podendos afirmar que esse cluster possui um padrão de consumo distribuido entre os diversos tipos de feriados.
+  
 ### Cluster 2:
     
-* 
+* Feriados: As vendas desse cluster estão distribuidas nos seguintes feriados, dia dos pais, com 10.261, dia das mães, com 8.973, dia da mulher, com 8.118, dia dos namorados, com 6.504 e páscoa, 4.165. Ao observar a distribuição do quantitativo de vendas desse cluster por feriados, é possivel afirmar que o padrão de consumo desse cluster está voltado a feriados familiares.
+
