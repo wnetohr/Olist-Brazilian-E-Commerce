@@ -207,3 +207,47 @@ with tab_valor_venda:
     final_heatmap = heatmap + text
 
     st.altair_chart(final_heatmap, use_container_width=True)
+
+# with tab_vendas_mensais:
+#     sales_price_per_cluster = load_data("./data/cluster_data/sales_price_per_cluster.parquet")
+#     sales_price_volume = load_data("./data/cluster_data/sales_price_volume.parquet")
+#     sales_volume_per_cluster = load_data("./data/cluster_data/sales_volume_per_cluster.parquet")
+
+#     plt.figure(figsize=(12, 6))
+#     sns.lineplot(data=sales_volume_per_cluster, x='month', y='sales_volume', hue='hue', marker='o')
+#     plt.title('Volume de Vendas por Cluster ao Longo do Ano')
+#     plt.xlabel('Mês')
+#     plt.ylabel('Volume de Vendas')
+#     plt.xticks(ticks=range(1, 13), labels=[
+#     'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 
+#     'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
+#     ])
+#     plt.legend(title='Cluster')
+#     plt.grid()
+#     st.pyplot(plt.gcf())
+
+#     plt.figure(figsize=(12, 6))
+#     sns.lineplot(data=sales_price_per_cluster, x='month', y='sales_price', hue='hue', marker='o')
+#     plt.title('Volume de Vendas por Cluster ao Longo do Ano')
+#     plt.xlabel('Mês')
+#     plt.ylabel('Valor de Vendas')
+#     plt.xticks(ticks=range(1, 13), labels=[
+#         'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 
+#         'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
+#     ])
+#     plt.legend(title='Cluster')
+#     plt.grid()
+#     st.pyplot(plt.gcf())
+
+#     plt.figure(figsize=(12, 6))
+#     sns.lineplot(data=sales_price_volume, x='month', y='sale_media', hue='hue', marker='o')
+#     plt.title('Media do valor de venda por Cluster ao Longo do Ano')
+#     plt.xlabel('Mês')
+#     plt.ylabel('Media do valor')
+#     plt.xticks(ticks=range(1, 13), labels=[
+#         'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 
+#         'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
+#     ])
+#     plt.legend(title='Cluster')
+#     plt.grid()
+#     st.pyplot(plt.gcf())
