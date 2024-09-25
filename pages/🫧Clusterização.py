@@ -18,7 +18,7 @@ Essa pagina conterá também o EDA realizado sobre esses clusters. As visoões s
 st.subheader("Escolha do número de clusters e tratamento dos dados")
 st.markdown("""
 Como possuimos um quantitativo de mais de 80 mil vendas, utilizamos uma amostragem de 20% dos dados para aplicar os algoritmos de 
-            cotovelo, silhoueta, Calinski Harabasz e Davies Bouldin a procura do melhor número de clusters.]
+            cotovelo, silhoueta, Calinski Harabasz e Davies Bouldin a procura do melhor número de clusters.
 Com essa amostragem de 20%, aplicamos os algortimos nos dados em sua forma original, depois os mesmos algortimos com os dados normalizados 
             e depois os mesmos algoritmos com os dados padronizados. Ao comparar os resultados obtidos, a clusterização dos dados normalizados
             em 3 clusters mostraram resultados mais satisfatorios.  
