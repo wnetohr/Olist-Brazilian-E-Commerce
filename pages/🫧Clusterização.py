@@ -55,6 +55,26 @@ def calculate_cluster_scores(df_sample, k_range, score_types):
 
     return pd.DataFrame(df_scores).set_index("n_clusters")
 
+st.title("Clusterização")
+st.markdown("""
+Esta pagina conterá visualizações do processo de clusterização e do EDA desses clusters. 
+            
+O intuito dessa pagina é fornecer uma visualização dos algortimos de cotovelo, silhoueta, Calinski Harabasz e Davies Bouldin, 
+            algoritmos esses utilizados para decidir qual o melhor número de clusters para o nosso algoritmo de clusterização, K-Means.
+Essa pagina conterá também o EDA realizado sobre esses clusters. As visoões sobre os clusters aplicadas aqui serão referentes as categorias
+            dos produtos vendidos, a relação dessas vendas por feriados comercias e por valor das vendas. 
+""")
+
+# Vizualição da escolha da formatação dos dados e do número de clusters
+st.subheader("Escolha do número de clusters e tratamento dos dados")
+st.markdown("""
+Como possuimos um quantitativo de mais de 80 mil vendas, utilizamos uma amostragem de 20% dos dados para aplicar os algoritmos de 
+            cotovelo, silhoueta, Calinski Harabasz e Davies Bouldin a procura do melhor número de clusters.
+Com essa amostragem de 20%, aplicamos os algortimos nos dados em sua forma original, depois os mesmos algortimos com os dados normalizados 
+            e depois os mesmos algoritmos com os dados padronizados. Ao comparar os resultados obtidos, a clusterização dos dados normalizados
+            em 3 clusters mostraram resultados mais satisfatorios.  
+""")
+
 # Carregar e processar os dados
 df = load_data("./data/cluster_data/category_seasonal_data.parquet")
 formato_dados = st.selectbox("Selecione o tratamento dos dados", ["original", "normalizado", "padronizado"])
@@ -96,7 +116,7 @@ st.markdown("""
 Aqui, é possivel visualizar as caracteristicas de cada clustar referente a dimensão escolhida.
 """)
 
-tab_categorias, tab_valor_venda, tab_datas_comerciais = st.tabs(['Categorias', 'Valor de venda', 'Datas Comerciais'])
+tab_categorias, tab_datas_comerciais, tab_valor_venda, tab_vendas_mensais = st.tabs(['Categorias', 'Datas Comerciais', 'Valor de venda', 'Venda por mês'])
 
 with tab_categorias:
     dados_agrupados = load_data("./data/cluster_data/df_grouped_category_per_cluster.parquet")
@@ -208,46 +228,46 @@ with tab_valor_venda:
 
     st.altair_chart(final_heatmap, use_container_width=True)
 
-# with tab_vendas_mensais:
-#     sales_price_per_cluster = load_data("./data/cluster_data/sales_price_per_cluster.parquet")
-#     sales_price_volume = load_data("./data/cluster_data/sales_price_volume.parquet")
-#     sales_volume_per_cluster = load_data("./data/cluster_data/sales_volume_per_cluster.parquet")
+with tab_vendas_mensais:
+    sales_price_per_cluster = load_data("./data/cluster_data/sales_price_per_cluster.parquet")
+    sales_price_volume = load_data("./data/cluster_data/sales_price_volume.parquet")
+    sales_volume_per_cluster = load_data("./data/cluster_data/sales_volume_per_cluster.parquet")
 
-#     plt.figure(figsize=(12, 6))
-#     sns.lineplot(data=sales_volume_per_cluster, x='month', y='sales_volume', hue='hue', marker='o')
-#     plt.title('Volume de Vendas por Cluster ao Longo do Ano')
-#     plt.xlabel('Mês')
-#     plt.ylabel('Volume de Vendas')
-#     plt.xticks(ticks=range(1, 13), labels=[
-#     'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 
-#     'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
-#     ])
-#     plt.legend(title='Cluster')
-#     plt.grid()
-#     st.pyplot(plt.gcf())
+    plt.figure(figsize=(12, 4))
+    sns.lineplot(data=sales_volume_per_cluster, x='month', y='sales_volume', hue='hue', marker='o')
+    plt.title('Volume de Vendas por Cluster ao Longo do Ano')
+    plt.xlabel('Mês')
+    plt.ylabel('Volume de Vendas')
+    plt.xticks(ticks=range(1, 13), labels=[
+    'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 
+    'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
+    ])
+    plt.legend(title='Cluster')
+    plt.grid()
+    st.pyplot(plt.gcf())
 
-#     plt.figure(figsize=(12, 6))
-#     sns.lineplot(data=sales_price_per_cluster, x='month', y='sales_price', hue='hue', marker='o')
-#     plt.title('Volume de Vendas por Cluster ao Longo do Ano')
-#     plt.xlabel('Mês')
-#     plt.ylabel('Valor de Vendas')
-#     plt.xticks(ticks=range(1, 13), labels=[
-#         'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 
-#         'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
-#     ])
-#     plt.legend(title='Cluster')
-#     plt.grid()
-#     st.pyplot(plt.gcf())
+    plt.figure(figsize=(12, 4))
+    sns.lineplot(data=sales_price_per_cluster, x='month', y='sales_price', hue='hue', marker='o')
+    plt.title('Valor das Vendas por Cluster ao Longo do Ano')
+    plt.xlabel('Mês')
+    plt.ylabel('Valor das Vendas')
+    plt.xticks(ticks=range(1, 13), labels=[
+        'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 
+        'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
+    ])
+    plt.legend(title='Cluster')
+    plt.grid()
+    st.pyplot(plt.gcf())
 
-#     plt.figure(figsize=(12, 6))
-#     sns.lineplot(data=sales_price_volume, x='month', y='sale_media', hue='hue', marker='o')
-#     plt.title('Media do valor de venda por Cluster ao Longo do Ano')
-#     plt.xlabel('Mês')
-#     plt.ylabel('Media do valor')
-#     plt.xticks(ticks=range(1, 13), labels=[
-#         'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 
-#         'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
-#     ])
-#     plt.legend(title='Cluster')
-#     plt.grid()
-#     st.pyplot(plt.gcf())
+    plt.figure(figsize=(12, 4))
+    sns.lineplot(data=sales_price_volume, x='month', y='sale_media', hue='hue', marker='o')
+    plt.title('Media do Valor de Venda por Cluster ao Longo do Ano')
+    plt.xlabel('Mês')
+    plt.ylabel('Media do valor de venda')
+    plt.xticks(ticks=range(1, 13), labels=[
+        'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 
+        'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
+    ])
+    plt.legend(title='Cluster')
+    plt.grid()
+    st.pyplot(plt.gcf())
