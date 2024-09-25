@@ -22,7 +22,7 @@ st.image(cotovelo_path.replace("#", formato_arquivo), caption='Cotovelo', use_co
 st.image(scores_path.replace("#", formato_arquivo), caption='Scores', use_column_width=False)
 st.image(multiplas_silhuetas_path.replace("#", formato_arquivo), caption='Silhouetas de entre 2 e 12 clusters', use_column_width=False)
 
-# # Visualização dos dados individualmente por cluster, podendo escolher multiplos pra visualizar um por imagem
+# Visualização dos dados individualmente por cluster, podendo escolher multiplos pra visualizar um por imagem
 # df = pd.read_parquet(path="./data/clean_data/df_cluster_kmeans_3.parquet")
 # st.subheader("Visualização dos dados individualmente por cluster")
 # dados = df.columns
@@ -37,7 +37,7 @@ st.image(multiplas_silhuetas_path.replace("#", formato_arquivo), caption='Silhou
 # else:
 #     st.write("Nenhuma feature selecionada.")
 
-# # Visualização de todas as features por cluster
+# Visualização de todas as features por cluster
 # st.subheader("Visualização geral dos dados por cluster")
 # clusters = ["Cluster 0", "Cluster 1", "Cluster 2"]
 # cluster_escolhido = st.selectbox("Selecione o cluster", clusters, placeholder="Escolha um cluster")
@@ -51,7 +51,7 @@ st.image(multiplas_silhuetas_path.replace("#", formato_arquivo), caption='Silhou
 # st.image(cluster_info_path.replace("#", clusters_opt), caption=f'Dados gerais do cluster {clusters_opt}', use_column_width=False)
 
 # Visualização da quantidade de compras por categorias dos clusters
-dados_agrupados = pd.read_parquet(path="./data/clean_data/df_grouped_category_per_cluster.parquet")
+dados_agrupados = pd.read_parquet(path="./data/cluster_data/df_grouped_category_per_cluster.parquet")
 st.subheader("Filtragem da quantidade de compras por categorias por cluster")
 categorias = dados_agrupados['filtered_category'].unique()
 selected_categories = st.multiselect('Selecione as categorias', categorias, default=categorias)
