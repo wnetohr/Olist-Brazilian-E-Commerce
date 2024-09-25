@@ -3,6 +3,13 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 import altair as alt
+from math import ceil
+import numpy as np
+from sklearn.cluster import KMeans
+from sklearn.discriminant_analysis import StandardScaler
+from sklearn.metrics import silhouette_score, calinski_harabasz_score, davies_bouldin_score
+from sklearn.preprocessing import MinMaxScaler
+from yellowbrick.cluster import KElbowVisualizer, SilhouetteVisualizer
 
 st.title("Clusterização")
 st.markdown("""
@@ -24,20 +31,92 @@ Com essa amostragem de 20%, aplicamos os algortimos nos dados em sua forma origi
             em 3 clusters mostraram resultados mais satisfatorios.  
 """)
 
+df = pd.read_parquet(path="./data/cluster_data/category_seasonal_data.parquet")
+
+# parametros
 formato_dados = ["original", "normalizado", "padronizado"]
 formato_escolhido = st.selectbox("Selecione o tratamento dos dados", formato_dados)
-formato_arquivo = {
-    "original": "og",
-    "normalizado": "nml",
-    "padronizado": "std"
+formato_dados = {
+    "original": "original",
+    "normalizado": "minmax",
+    "padronizado": "standard"
 }.get(formato_escolhido, "og")
-        
-cotovelo_path = "./data_visualization/elbow_20_perc_#.png"
-scores_path = "./data_visualization/score_20_perc_#.png"
-multiplas_silhuetas_path = "./data_visualization/multi_silhouette_score_#.png"
-st.image(cotovelo_path.replace("#", formato_arquivo), caption='Cotovelo', use_column_width=False)
-st.image(scores_path.replace("#", formato_arquivo), caption='Scores', use_column_width=False)
-st.image(multiplas_silhuetas_path.replace("#", formato_arquivo), caption='Silhouetas de entre 2 e 12 clusters', use_column_width=False)
+initial_range = 2
+final_range = 7
+random = 42
+score_types=["silhouette", "calinski_harabasz", "davies_bouldin"]
+sample_percentual = 20
+per_col = 3
+width_per_ax, height_per_ax = 6, 5
+
+# transformacao
+df = df.sample(ceil(df.shape[0]*(sample_percentual/100)), random_state=random)
+
+match formato_dados:
+    case "standard":
+        scaler = StandardScaler()
+        df = scaler.fit_transform(df)
+    case "minmax":
+        scaler = MinMaxScaler()
+        df = scaler.fit_transform(df)
+    case _:
+        pass
+
+# graficos
+km = KMeans(random_state=42)
+visualizer = KElbowVisualizer(km, k=(initial_range, final_range))
+visualizer.fit(df)
+visualizer.show()
+st.pyplot(plt.gcf())
+
+fitted_kmeans = {}
+labels_kmeans = {}
+df_scores = []
+for n_clusters in np.arange(initial_range, final_range):
+    tmp_scores = {}
+    tmp_scores["n_clusters"] = n_clusters
+    
+    kmeans = KMeans(n_clusters=n_clusters, random_state=random)
+    labels_clusters = kmeans.fit_predict(df)
+    
+    fitted_kmeans[n_clusters] = kmeans
+    labels_kmeans[n_clusters] = labels_clusters
+    
+    if "silhouette" in score_types:
+        silhouette = silhouette_score(df, labels_clusters)
+        tmp_scores["silhouette"] = silhouette
+    
+    if "calinski_harabasz" in score_types:
+        ch = calinski_harabasz_score(df, labels_clusters)
+        tmp_scores["calinski_harabasz"] = ch
+    
+    if "davies_bouldin" in score_types:
+        db = davies_bouldin_score(df, labels_clusters)
+        tmp_scores["davies_bouldin"] = db
+                
+    df_scores.append(tmp_scores)
+
+df_scores = pd.DataFrame(df_scores)
+df_scores.set_index("n_clusters", inplace=True)
+df_scores.plot(subplots=True, layout=(1,len(score_types)), figsize=(len(score_types) * width_per_ax, height_per_ax), xticks=np.arange(initial_range, final_range+1))
+st.pyplot(plt.gcf())
+
+lines = ceil((final_range-initial_range)/per_col)
+    
+fig, axes = plt.subplots(lines, per_col, figsize=(per_col*width_per_ax,lines*height_per_ax))
+for pos, nCluster in enumerate(range(initial_range, final_range)):
+    km = KMeans(n_clusters=nCluster, random_state=random)
+    
+    if lines == 1:
+        ax=axes[pos]
+    else: 
+        q, mod = divmod(pos, per_col)
+        ax = axes[q][mod]
+    
+    visualizer = SilhouetteVisualizer(km, colors='yellowbrick', ax=ax)
+    visualizer.fit(df)
+    ax.set_title(f"clusters = {nCluster}\nscore = {visualizer.silhouette_score_}") 
+st.pyplot(plt.gcf())
 
 # Visualização do EDA
 st.subheader("EDA dos clusters obtidos")
