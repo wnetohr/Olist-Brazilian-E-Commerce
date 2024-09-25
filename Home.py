@@ -38,7 +38,7 @@ st.markdown(f'''
     <h2>Perguntas</h2>
     <ul>
         <li>Como as variações sazonais afetam o desempenho das vendas em certos grupos de produtos no comércio eletrônico brasileiro?</li>
-        <li>Observando as avaliações feitas pelos consumidores em suas compras, quais são as críticas de maior impacto na satisfação dos consumidores?</li>
+        <li>Observando as avaliações feitas pelos consumidores em suas compras, quais são os fatores que mais influenciam na satisfação dos consumidores?</li>
     </ul>
     <h2>Alunos</h2>
     <ul>
