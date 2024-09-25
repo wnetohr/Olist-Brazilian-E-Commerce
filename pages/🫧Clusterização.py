@@ -6,119 +6,91 @@ import altair as alt
 from math import ceil
 import numpy as np
 from sklearn.cluster import KMeans
-from sklearn.discriminant_analysis import StandardScaler
+from sklearn.preprocessing import StandardScaler, MinMaxScaler
 from sklearn.metrics import silhouette_score, calinski_harabasz_score, davies_bouldin_score
-from sklearn.preprocessing import MinMaxScaler
 from yellowbrick.cluster import KElbowVisualizer, SilhouetteVisualizer
 
-st.title("Clusterização")
-st.markdown("""
-Esta pagina conterá visualizações do processo de clusterização e do EDA desses clusters. 
-            
-O intuito dessa pagina é fornecer uma visualização dos algortimos de cotovelo, silhoueta, Calinski Harabasz e Davies Bouldin, 
-            algoritmos esses utilizados para decidir qual o melhor número de clusters para o nosso algoritmo de clusterização, K-Means.
-Essa pagina conterá também o EDA realizado sobre esses clusters. As visoões sobre os clusters aplicadas aqui serão referentes as categorias
-            dos produtos vendidos, a relação dessas vendas por feriados comercias e por valor das vendas. 
-""")
+# Função para carregar os dados
+@st.cache_data
+def load_data(file_path):
+    return pd.read_parquet(file_path)
 
-# Vizualição da escolha da formatação dos dados e do número de clusters
-st.subheader("Escolha do número de clusters e tratamento dos dados")
-st.markdown("""
-Como possuimos um quantitativo de mais de 80 mil vendas, utilizamos uma amostragem de 20% dos dados para aplicar os algoritmos de 
-            cotovelo, silhoueta, Calinski Harabasz e Davies Bouldin a procura do melhor número de clusters.]
-Com essa amostragem de 20%, aplicamos os algortimos nos dados em sua forma original, depois os mesmos algortimos com os dados normalizados 
-            e depois os mesmos algoritmos com os dados padronizados. Ao comparar os resultados obtidos, a clusterização dos dados normalizados
-            em 3 clusters mostraram resultados mais satisfatorios.  
-""")
+# Função para aplicar a amostragem e escalonamento
+@st.cache_data
+def process_data(df, formato_dados, sample_percentual, random_state=42):
+    df_sample = df.sample(ceil(df.shape[0] * (sample_percentual / 100)), random_state=random_state)
 
-df = pd.read_parquet(path="./data/cluster_data/category_seasonal_data.parquet")
-
-# parametros
-formato_dados = ["original", "normalizado", "padronizado"]
-formato_escolhido = st.selectbox("Selecione o tratamento dos dados", formato_dados)
-formato_dados = {
-    "original": "original",
-    "normalizado": "minmax",
-    "padronizado": "standard"
-}.get(formato_escolhido, "og")
-initial_range = 2
-final_range = 7
-random = 42
-score_types=["silhouette", "calinski_harabasz", "davies_bouldin"]
-sample_percentual = 20
-per_col = 3
-width_per_ax, height_per_ax = 6, 5
-
-# transformacao
-df = df.sample(ceil(df.shape[0]*(sample_percentual/100)), random_state=random)
-
-match formato_dados:
-    case "standard":
+    if formato_dados == "standard":
         scaler = StandardScaler()
-        df = scaler.fit_transform(df)
-    case "minmax":
+        df_sample = scaler.fit_transform(df_sample)
+    elif formato_dados == "minmax":
         scaler = MinMaxScaler()
-        df = scaler.fit_transform(df)
-    case _:
-        pass
+        df_sample = scaler.fit_transform(df_sample)
 
-# graficos
-km = KMeans(random_state=42)
-visualizer = KElbowVisualizer(km, k=(initial_range, final_range))
-visualizer.fit(df)
-visualizer.show()
-st.pyplot(plt.gcf())
+    return df_sample
 
-fitted_kmeans = {}
-labels_kmeans = {}
-df_scores = []
-for n_clusters in np.arange(initial_range, final_range):
-    tmp_scores = {}
-    tmp_scores["n_clusters"] = n_clusters
-    
-    kmeans = KMeans(n_clusters=n_clusters, random_state=random)
-    labels_clusters = kmeans.fit_predict(df)
-    
-    fitted_kmeans[n_clusters] = kmeans
-    labels_kmeans[n_clusters] = labels_clusters
-    
-    if "silhouette" in score_types:
-        silhouette = silhouette_score(df, labels_clusters)
-        tmp_scores["silhouette"] = silhouette
-    
-    if "calinski_harabasz" in score_types:
-        ch = calinski_harabasz_score(df, labels_clusters)
-        tmp_scores["calinski_harabasz"] = ch
-    
-    if "davies_bouldin" in score_types:
-        db = davies_bouldin_score(df, labels_clusters)
-        tmp_scores["davies_bouldin"] = db
-                
-    df_scores.append(tmp_scores)
+# Função para calcular scores de clusters
+@st.cache_data
+def calculate_cluster_scores(df_sample, k_range, score_types):
+    fitted_kmeans = {}
+    labels_kmeans = {}
+    df_scores = []
 
-df_scores = pd.DataFrame(df_scores)
-df_scores.set_index("n_clusters", inplace=True)
-df_scores.plot(subplots=True, layout=(1,len(score_types)), figsize=(len(score_types) * width_per_ax, height_per_ax), xticks=np.arange(initial_range, final_range+1))
-st.pyplot(plt.gcf())
+    for n_clusters in range(k_range[0], k_range[1] + 1):
+        tmp_scores = {"n_clusters": n_clusters}
+        kmeans = KMeans(n_clusters=n_clusters, random_state=42)
+        labels_clusters = kmeans.fit_predict(df_sample)
 
-lines = ceil((final_range-initial_range)/per_col)
-    
-fig, axes = plt.subplots(lines, per_col, figsize=(per_col*width_per_ax,lines*height_per_ax))
-for pos, nCluster in enumerate(range(initial_range, final_range)):
-    km = KMeans(n_clusters=nCluster, random_state=random)
-    
-    if lines == 1:
-        ax=axes[pos]
-    else: 
-        q, mod = divmod(pos, per_col)
-        ax = axes[q][mod]
-    
-    visualizer = SilhouetteVisualizer(km, colors='yellowbrick', ax=ax)
-    visualizer.fit(df)
-    ax.set_title(f"clusters = {nCluster}\nscore = {visualizer.silhouette_score_}") 
-st.pyplot(plt.gcf())
+        fitted_kmeans[n_clusters] = kmeans
+        labels_kmeans[n_clusters] = labels_clusters
 
-# Visualização do EDA
+        if "silhouette" in score_types:
+            tmp_scores["silhouette"] = silhouette_score(df_sample, labels_clusters)
+        if "calinski_harabasz" in score_types:
+            tmp_scores["calinski_harabasz"] = calinski_harabasz_score(df_sample, labels_clusters)
+        if "davies_bouldin" in score_types:
+            tmp_scores["davies_bouldin"] = davies_bouldin_score(df_sample, labels_clusters)
+
+        df_scores.append(tmp_scores)
+
+    return pd.DataFrame(df_scores).set_index("n_clusters")
+
+# Carregar e processar os dados
+df = load_data("./data/cluster_data/category_seasonal_data.parquet")
+formato_dados = st.selectbox("Selecione o tratamento dos dados", ["original", "normalizado", "padronizado"])
+formato_dados = {"original": "original", "normalizado": "minmax", "padronizado": "standard"}[formato_dados]
+
+# Aplicar processamento de dados (com cache para eficiência)
+sample_percentual = 20
+df_sample = process_data(df, formato_dados, sample_percentual)
+
+# Divisão de interface em duas colunas
+col1, col2 = st.columns(2)
+
+# Gráfico de Elbow
+with col1:
+    k_range = st.slider("Selecione o intervalo de clusters", min_value=2, max_value=10, value=(2, 7))
+    plt.figure()
+    km = KMeans(random_state=42)
+    visualizer = KElbowVisualizer(km, k=(k_range[0], k_range[1]))
+    visualizer.fit(df_sample)
+    st.pyplot(plt.gcf())
+
+# Gráfico de Silhouette
+with col2:
+    k_silhouette = st.slider("Selecione o número de clusters", min_value=2, max_value=10, value=3)
+    plt.figure()
+    km = KMeans(n_clusters=k_silhouette, random_state=42)
+    visualizer = SilhouetteVisualizer(km, colors='yellowbrick')
+    visualizer.fit(df_sample)
+    st.pyplot(plt.gcf())
+
+# Expandir para exibir as métricas de avaliação
+with st.expander("Silhueta, Calinski Harabasz e Davies Bouldin", expanded=False):
+    score_types = ["silhouette", "calinski_harabasz", "davies_bouldin"]
+    df_scores = calculate_cluster_scores(df_sample, k_range, score_types)
+    df_scores.plot(subplots=True, layout=(1, len(score_types)), figsize=(len(score_types) * 6, 5))
+    st.pyplot(plt.gcf())
 st.subheader("EDA dos clusters obtidos")
 st.markdown("""
 Aqui, é possivel visualizar as caracteristicas de cada clustar referente a dimensão escolhida.
@@ -127,7 +99,7 @@ Aqui, é possivel visualizar as caracteristicas de cada clustar referente a dime
 tab_categorias, tab_valor_venda, tab_datas_comerciais = st.tabs(['Categorias', 'Valor de venda', 'Datas Comerciais'])
 
 with tab_categorias:
-    dados_agrupados = pd.read_parquet(path="./data/cluster_data/df_grouped_category_per_cluster.parquet")
+    dados_agrupados = load_data("./data/cluster_data/df_grouped_category_per_cluster.parquet")
 
     with st.expander("Clique aqui os dados em um gráfico unico", expanded=False):
         plt.figure(figsize=(10, 4))
@@ -138,12 +110,10 @@ with tab_categorias:
         plt.legend(title='Categorias', fontsize=12, title_fontsize=14, bbox_to_anchor=(1.05, 1), loc='upper left')
         st.pyplot(plt.gcf())
 
-    # Flitragem de clusters
     st.subheader("Filtragem da quantidade de compras por categorias por cluster")
     clusters = dados_agrupados['hue'].unique()
     selected_clusters = st.multiselect('Selecione os clusters', clusters, default=clusters, key='f_categ')
 
-    # Flitragem de categorias
     categorias = dados_agrupados['filtered_category'].unique()
     selected_categories = st.multiselect('Selecione as categorias', categorias, default=categorias)
     filtered_df = dados_agrupados[dados_agrupados['filtered_category'].isin(selected_categories)]
@@ -167,7 +137,7 @@ with tab_categorias:
         st.write("Nenhuma categoria selecionada.")
 
 with tab_datas_comerciais:
-    dados_feriados = pd.read_parquet(path="./data/cluster_data/df_grouped_commercialdate_per_cluster.parquet")
+    dados_feriados = load_data("./data/cluster_data/df_grouped_commercialdate_per_cluster.parquet")
 
     with st.expander("Clique aqui os dados em um gráfico unico", expanded=False):
         plt.figure(figsize=(10, 4))
@@ -182,7 +152,6 @@ with tab_datas_comerciais:
     clusters_2 = dados_feriados['hue'].unique()
     selected_clusters_2 = st.multiselect('Selecione os clusters', clusters_2, default=clusters_2, key='f_datacomerc')
 
-    # Flitragem de datas comerciais
     feriados = dados_feriados['commercial_date'].unique()
     selected_feriados = st.multiselect('Selecione as datas comerciais', feriados, default=feriados)
     filtered_df_feriados = dados_feriados[dados_feriados['commercial_date'].isin(selected_feriados)]
@@ -206,7 +175,7 @@ with tab_datas_comerciais:
         st.write("Nenhuma categoria selecionada.")
 
 with tab_valor_venda:
-    gasto_medio = pd.read_parquet(path="./data/cluster_data/avg_spending.parquet")
+    gasto_medio = load_data("./data/cluster_data/avg_spending.parquet")
 
     st.subheader("Filtragem da quantidade de compras por datas comerciais por cluster")
     clusters_3 = dados_feriados['hue'].unique()
@@ -235,7 +204,6 @@ with tab_valor_venda:
         color=alt.value('black')
     )
 
-    # Compor o heatmap e o texto
     final_heatmap = heatmap + text
 
     st.altair_chart(final_heatmap, use_container_width=True)
