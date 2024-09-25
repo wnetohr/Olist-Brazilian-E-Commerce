@@ -20,12 +20,10 @@ df = load_data('./data/outputs/results.parquet')
 
 st.title('🔎 Classificação')
 st.subheader('Comparação de Modelos de Classificação')
-st.markdown("""
-Esta página foi criada para fornecer uma visão detalhada do desempenho de vários modelos de classificação treinados em diferentes conjuntos de dados. 
+st.markdown("""Esta página foi criada para fornecer uma visão detalhada do desempenho de vários modelos de classificação treinados em diferentes conjuntos de dados. 
             Aqui, você pode comparar as principais métricas de cada modelo, explorar as características que mais influenciam as previsões, e analisar as matrizes
-             de confusão para entender melhor os erros de classificação. Vale ressaltar que agrupamos as notas entre alguns ''review_score_factor'', e o que se comportou de forma mais realista foi separará-las em 3 grupos.
-            Eles são o grupo 0 (notas 1), grupo 1 (notas 2, 3 e 4) e o grupo 2 (notas 5).
-""")
+             de confusão para entender melhor os erros de classificação. Vale ressaltar que agrupamos as notas entre alguns ''review_score_factor'', e o que se comportou de forma mais realista foi separá-las em 3 grupos.
+            Eles são o grupo 0 (notas 1), grupo 1 (notas 2, 3 e 4) e o grupo 2 (notas 5).""")
 
 # Selecionar modelos e conjunto de dados
 models = df['Model'].unique()
@@ -67,10 +65,7 @@ selected_models = st.multiselect('Selecione os Modelos para Comparar', options=m
 
 # Filtro para Importâncias das Características
 st.subheader('Importâncias das Características')
-st.markdown("""
-Aqui você pode visualizar quais características foram mais importantes para os modelos selecionados ao tomar decisões de classificação. Compreender essas importâncias pode ajudar a identificar quais fatores influenciam mais as previsões.
-""")
-
+st.markdown("""Aqui você pode visualizar quais características foram mais importantes para os modelos selecionados ao tomar decisões de classificação. Compreender essas importâncias pode ajudar a identificar quais fatores influenciam mais as previsões.""")
 filtered_importances_df = feature_importances_df[feature_importances_df['Model'].isin(selected_models)]
 
 if not filtered_importances_df.empty:
@@ -125,7 +120,7 @@ if not filtered_confusion_matrices_df.empty:
                         plt.ylabel('Classe Real')
                         plt.tight_layout()
                         st.pyplot(plt)
-                        st.pyplot(plt)
+                        plt.clf()  # Limpa a figura após exibição
 else:
     st.warning('Nenhuma matriz de confusão encontrada para os modelos selecionados.')
 
@@ -155,6 +150,5 @@ with col2:
     st.write(""" A quantidade de parcelas e o valor do pagamento são relevantes, sugerindo que o modelo está capturando como diferentes padrões de pagamento influenciam as avaliações ou decisões dos clientes. """)
 
 st.subheader('Conclusão e Próximos Passos')
-st.markdown("""
-Com as informações e visualizações fornecidas, agora temos uma base sólida para comparar o desempenho dos modelos e identificar oportunidades de melhoria, tendo em vista possíveis ajustes nos dados de entrada ou parâmetros do modelo, para impactar nos resultados.
+st.markdown("""Com as informações e visualizações fornecidas, agora temos uma base sólida para comparar o desempenho dos modelos e identificar oportunidades de melhoria, tendo em vista possíveis ajustes nos dados de entrada ou parâmetros do modelo, para impactar nos resultados.
 """)
