@@ -125,30 +125,36 @@ else:
     st.warning('Nenhuma matriz de confusão encontrada para os modelos selecionados.')
 
 st.subheader('SHAP para o Random Forest')
+
 # Cria duas colunas
-col1, col2 = st.columns([2, 1])  # Ajuste os números para definir a largura das colunas
+col1, col2 = st.columns(2)
 
-# Exibe a imagem na primeira coluna
 with col1:
-    image = Image.open('data/outputs/SHAP_RF_small.png')
-    st.image(image, caption='Gráfico SHAP - Importância das Features')
+    image_0 = Image.open('data/outputs/SHAP_CLASS_0.png')
+    st.image(image_0, caption='Importância das Features na Classe 0 - Negativos', use_column_width=True)
 
-# Adiciona o texto na segunda coluna
 with col2:
-    st.write("""
-    ### Interpretação do Gráfico SHAP para o Random Forest
-    Este gráfico mostra a importância das features mais relevantes para o modelo Random Forest. Cada barra representa a contribuição média absoluta de uma feature em relação à decisão final do modelo.
+    image_1 = Image.open('data/outputs/SHAP_CLASS_1.png')
+    st.image(image_1, caption='Importância das Features na Classe 1 - Neutros', use_column_width=True)
 
-    - **payment_value**: Indica o valor pago pelo cliente.
-    - **payment_installments**: Refere-se ao número de parcelas utilizadas para o pagamento.
-    - **product_name_length**: Refere-se ao comprimento do nome do produto.
+with col1:
+    image_2 = Image.open('data/outputs/SHAP_CLASS_2.png')
+    st.image(image_2, caption='Importância das Features na Classe 2 - Positivos', use_column_width=True)
 
-    Essas features são as mais influentes para o modelo na predição das avaliações/satisfação dadas pelos clientes, de acordo com o SHAP. Ou seja, podemos inferir que:
-    """)
+with col2:
+    image_rf = Image.open('data/outputs/SHAP_BARRAS.png')
+    st.image(image_rf, caption='Gráfico de Barras Multiclasse', use_column_width=True)
 
-    st.write(""" O comprimento do nome do produto pode estar influenciando como o modelo faz as previsões, potencialmente indicando que produtos com nomes mais longos ou curtos estão associados a certos comportamentos ou padrões de compra. """)
-    st.write(""" A quantidade de parcelas e o valor do pagamento são relevantes, sugerindo que o modelo está capturando como diferentes padrões de pagamento influenciam as avaliações ou decisões dos clientes. """)
 
 st.subheader('Conclusão e Próximos Passos')
 st.markdown("""Com as informações e visualizações fornecidas, agora temos uma base sólida para comparar o desempenho dos modelos e identificar oportunidades de melhoria, tendo em vista possíveis ajustes nos dados de entrada ou parâmetros do modelo, para impactar nos resultados.
+""")
+st.write("""##### Interpretação do Gráfico SHAP para o Random Forest
+Estes gráficos mostra a importância das features mais relevantes para o modelo Random Forest. Cada barra representa a contribuição média absoluta de uma feature em relação à decisão final do modelo.
+
+- **payment_value**: Indica o valor pago pelo cliente.
+- **payment_installments**: Refere-se ao número de parcelas utilizadas para o pagamento.
+- **comp_score, pos e neu**: Refere-se ao sentimento geral das avaliações.
+
+Essas features são as mais influentes para o modelo na predição das avaliações/satisfação dadas pelos clientes, de acordo com o SHAP.
 """)
